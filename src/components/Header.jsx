@@ -10,13 +10,13 @@ export function Header ({ isLoggedIn, setIsLoggedIn }) {
             </div>
             <div>
                 <button 
-                    className="flex items-center lg:text-xl text-md font-medium gap-1 text-red-600"
+                    className="flex items-center lg:text-xl text-md font-medium gap-1 hover:text-red-600 text-gray-400"
                     onClick={() => {
                         setIsLoggedIn(!isLoggedIn);
                         navigate('/');
                     }}
                 >
-                    <LuLogOut className="bg-red-600 text-2xl p-1 lg:text-3xl text-white rounded" /> Logout
+                    <LuLogOut className="hover:text-red-600 text-gray-400 text-2xl p-1 lg:text-3xl rounded" /> Logout
                 </button>
             </div>
         </div>

@@ -2,7 +2,7 @@ import { LuPen, LuTrash2 } from "react-icons/lu"
 
 export function TaskLists() {
     return (
-        <div className="TaskLists mt-5 bg-white rounded-lg p-4 shadow-md border border-blue-200">
+        <div className="TaskLists mt-5 bg-white rounded-lg p-4 shadow-md border border-blue-200 w-full overflow-x-auto">
             <h1 className="text-2xl font-medium mb-4">All Tasks</h1>
             <table className="w-full border border-gray-200 rounded-lg overflow-hidden">
                 <thead className="bg-gradient-to-r from-blue-700 via-blue-500 to-blue-700 text-white">
