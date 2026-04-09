@@ -26,6 +26,11 @@ export function SignUpForm({errr, setErrr, successDisplay, setSuccessDisplay, se
             errdisplay
             return;
         }
+        if(password.length < 6) {
+            setErrr('Password must be at least 6 characters long');
+            errdisplay
+            return;
+        }
         if(!confirmPassword.trim()) {
             setErrr('Please confirm your password');
             errdisplay

@@ -1,13 +1,22 @@
 import { LuSquareCheck } from "react-icons/lu";
 import { LoginForm } from "../components/LoginForm";
 import { SignUpForm } from "../components/SignUpForm";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export function Login({isLoggedIn, setIsLoggedIn}) {
     const [isLogin, setIsLogin] = useState(true);
     const [errr, setErrr] = useState('');
     const [successDisplay, setSuccessDisplay] = useState('')
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(()=>{
+        if(isLoading) {
+            document.body.style.overflow = 'hidden';
+        }
+        else {
+            document.body.style.overflow = 'auto';
+        }
+    }, [isLoading]);
 
   return (
     <section className="min-h-[100vh] bg-gradient-to-br from-blue-700 via-blue-500 to-blue-700 p-4 flex items-center justify-center w-full">
