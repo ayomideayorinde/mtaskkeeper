@@ -48,7 +48,7 @@ export function Login({isLoggedIn, setIsLoggedIn}) {
                             className="fixed inset-0 w-full h-full bg-blue-700"
                         >
                             <div className="flex flex-col items-center justify-center w-full h-full">
-                                <img src="./load.gif" alt="" width={200} height={200} />
+                                <img src="./loading.gif" alt="" width={100} height={100} />
                                 <p className="text-white text-lg mt-4">Loading...</p>
                             </div>
                         </div>
