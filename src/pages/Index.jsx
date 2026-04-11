@@ -1,9 +1,9 @@
 import { Login } from './Login';
 
-export default function Index ({isLoggedIn, setIsLoggedIn}){
+export default function Index ({isLoggedIn, setIsLoggedIn, currentUser}){
     return (
         <>
-            <Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+            <Login isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} currentUser={currentUser} />
         </>
     )
 };

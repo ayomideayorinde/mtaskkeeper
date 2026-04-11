@@ -1,6 +1,31 @@
 import { LuPen, LuTrash2 } from "react-icons/lu"
+import { collection, deleteDoc, doc, onSnapshot, query, updateDoc, where } from "firebase/firestore";
+import { auth, db } from "../config/firebase";
+import { useEffect } from "react";
+import { useState } from "react";
 
-export function TaskLists() {
+export function TaskLists({ currentUser }) {
+    const [tasks, setTasks] = useState([]);
+
+    useEffect(() => {
+        const user = auth.currentUser;
+        if (!user) return;
+        const unsubscribe = onSnapshot(
+            query(
+                collection(db, 'todos'),
+                where('uId','==',user.uid)
+            ),
+            (snapshot)=>{
+                const data = snapshot.docs.map((doc)=>({
+                    docId: doc.id,
+                    ...doc.data()
+            }))
+            setTasks(data)
+        })
+        return ()=>unsubscribe()
+    }, []);
+
+
     return (
         <div className="TaskLists mt-5 bg-white rounded-lg p-4 shadow-md border border-blue-200 w-full overflow-x-auto">
             <h1 className="text-2xl font-medium mb-4">All Tasks</h1>
@@ -15,43 +40,35 @@ export function TaskLists() {
                 </thead>
 
                 <tbody className="text-sm text-gray-700 divide-y">
-                    {/* Row 1 */}
-                    <tr className="hover:bg-gray-50 transition">
-                    <td className="px-4 py-4 font-medium">Task 1</td>
-                    <td className="px-4 py-4 text-gray-500">
-                        Description for Task 1
-                    </td>
-                    <td className="px-4 py-4 text-center">
-                        <span className="bg-yellow-100 text-yellow-700 text-xs font-medium px-3 py-1 rounded-full">
-                        Pending
-                        </span>
-                    </td>
-                    <td className="px-4 py-4">
-                        <div className="flex justify-end items-center gap-3">
-                        <LuPen className="text-blue-500 cursor-pointer hover:scale-110 transition" />
-                        <LuTrash2 className="text-red-500 cursor-pointer hover:scale-110 transition" />
-                        </div>
-                    </td>
-                    </tr>
+                    {tasks.map((task) => (
+                        <tr key={task.id} className="hover:bg-gray-50">
+                            <td className="px-4 py-3">{task.title}</td>
+                            <td className="px-4 py-3">{task.description}</td>
+                            <td className="px-4 py-3 text-center">
+                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${task.completed ? 'bg-green-100 text-green-700' : 'bg-yellow-100 text-yellow-700'}`}>
+                                    {task.completed ? 'Completed' : 'Pending'}
+                                </span>
+                            </td>
+                            <td className="px-4 py-3">
+                                <div className="flex justify-end items-center gap-3">
+                                    <LuPen className="text-blue-500 cursor-pointer hover:scale-110 transition"
+                                    onClick={() => {
+                                        // Handle edit task logic
+                                        const newStatus = !task.completed;
+                                        updateDoc(doc(db, "todos", task.id), { completed: newStatus });
+                                    }}
+                                    />
+                                    <LuTrash2 className="text-red-500 cursor-pointer hover:scale-110 transition" 
+                                    onClick={() => {
+                                        // Handle delete task logic
+                                        deleteDoc(doc(db, "todos", task.id));
+                                    }}
+                                    />
+                                </div>
+                            </td>
+                        </tr>
+                    ))}
 
-                    {/* Row 2 */}
-                    <tr className="hover:bg-gray-50 transition">
-                    <td className="px-4 py-4 font-medium">Task 2</td>
-                    <td className="px-4 py-4 text-gray-500">
-                        Description for Task 2
-                    </td>
-                    <td className="px-4 py-4 text-center">
-                        <span className="bg-green-100 text-green-700 text-xs font-medium px-3 py-1 rounded-full">
-                        Completed
-                        </span>
-                    </td>
-                    <td className="px-4 py-4">
-                        <div className="flex justify-end items-center gap-3">
-                        <LuPen className="text-blue-500 cursor-pointer hover:scale-110 transition" />
-                        <LuTrash2 className="text-red-500 cursor-pointer hover:scale-110 transition" />
-                        </div>
-                    </td>
-                    </tr>
                 </tbody>
             </table>
         </div>

@@ -3,7 +3,7 @@ import { LoginForm } from "../components/LoginForm";
 import { SignUpForm } from "../components/SignUpForm";
 import { useState, useEffect } from "react";
 
-export function Login({isLoggedIn, setIsLoggedIn}) {
+export function Login({isLoggedIn, setIsLoggedIn, currentUser}) {
     const [isLogin, setIsLogin] = useState(true);
     const [errr, setErrr] = useState('');
     const [successDisplay, setSuccessDisplay] = useState('')
@@ -40,8 +40,8 @@ export function Login({isLoggedIn, setIsLoggedIn}) {
                 <div className="w-full m-h-full mt-4">
                     {
                         isLogin ? 
-                        <LoginForm successDisplay={successDisplay} setSuccessDisplay={setSuccessDisplay} errr={errr} setErrr={setErrr} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsLoading={setIsLoading} /> : 
-                        <SignUpForm successDisplay={successDisplay} setSuccessDisplay={setSuccessDisplay} errr={errr} setErrr={setErrr} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsLoading={setIsLoading} />
+                        <LoginForm successDisplay={successDisplay} setSuccessDisplay={setSuccessDisplay} errr={errr} setErrr={setErrr} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsLoading={setIsLoading} currentUser={currentUser} /> : 
+                        <SignUpForm successDisplay={successDisplay} setSuccessDisplay={setSuccessDisplay} errr={errr} setErrr={setErrr} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsLoading={setIsLoading} currentUser={currentUser} />
                     }
                     {isLoading && 
                         <div 

@@ -2,24 +2,40 @@ import { Dashboard } from './pages/Dashboard';
 import Index from './pages/Index';
 import { NotFound } from './pages/NotFound';
 import { Routes, BrowserRouter, Route } from 'react-router';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { onAuthStateChanged } from 'firebase/auth'
+import { auth } from './config/firebase'
 
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [currentUser, setCurrentUser] = useState()
+
+  useEffect(()=>{
+    const unsubscribe = onAuthStateChanged(auth, (user)=>{
+      if (user) {
+        setIsLoggedIn(true)
+        setCurrentUser(user.email)
+      }
+      else {
+        setIsLoggedIn(false)
+      }
+    })
+    return ()=> unsubscribe()
+  })
 
   return (
     <div>
       <BrowserRouter>
         <Routes>
           <Route path="/" 
-            element={<Index isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />} 
+            element={<Index isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} currentUser={currentUser} />} 
           />
           <Route path='/dashboard' 
             element={isLoggedIn? 
-              <Dashboard isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} 
+              <Dashboard isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} currentUser={currentUser} 
               /> : 
-              <Index isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} 
+              <Index isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} currentUser={currentUser} 
               />
             } 
           />

@@ -1,8 +1,11 @@
 import { LuSquareCheck, LuLogOut } from "react-icons/lu"
 import { useNavigate } from "react-router"
+import { signOut } from 'firebase/auth'
+import { auth } from '../config/firebase'
 
-export function Header ({ isLoggedIn, setIsLoggedIn }) {
+export function Header ({  setIsLoggedIn }) {
     const navigate = useNavigate();
+
     return (
         <div className="lg:py-5 py-2 lg:px-36 px-2 flex justify-between items-center shadow-xl sticky bg-gradient-to-tr from-blue-100 via-blue-50 to-blue-100">
             <div>
@@ -11,8 +14,9 @@ export function Header ({ isLoggedIn, setIsLoggedIn }) {
             <div>
                 <button 
                     className="flex items-center lg:text-xl text-md font-medium gap-1 hover:text-red-600 text-gray-400 group/logout"
-                    onClick={() => {
-                        setIsLoggedIn(!isLoggedIn);
+                    onClick={()=>{
+                        signOut(auth);
+                        setIsLoggedIn(false);
                         navigate('/');
                     }}
                 >

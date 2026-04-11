@@ -1,18 +1,37 @@
 import { LuPlus } from "react-icons/lu"
 import { TaskLists } from "./TaskLists"
 import { AddTasks } from "./AddTasks"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { collection, query, where, getCountFromServer } from "firebase/firestore";
+import { db } from "../config/firebase";
 
-export function Tasks() {
+export function Tasks({ currentUser }) {
     const [addTask, setAddTask] = useState(false)
-    
+    const [taskCount, setTaskCount] = useState(0)
+    // Get the count of tasks for the current user
+    const fetchTaskCount = async () => {
+        if (!currentUser) return;
+
+        const q = query(
+            collection(db, "todos"),
+            where("userId", "==", currentUser.uid)
+        );
+        const snapshot = await getCountFromServer(q);
+        setTaskCount(snapshot.data().count);
+    };
+
+    useEffect(() => {
+        fetchTaskCount();
+    }, [currentUser]);
+
     return (
         <div className="Tasks w-full flex flex-col p-4 lg:px-36 gap-2 mt-3">
             {addTask && <AddTasks setAddTask={setAddTask} />}
             <div className="flex justify-between items-start">
                 <div>
                     <p className='text-2xl lg:text-2xl font-bold'>My Tasks</p>
-                    <p className='lg:text-md'>You have 2 tasks</p>
+                    {/* count number of tasks in currentUser check very well to be sure it's correct */}
+                    <p className='lg:text-md'>You have {taskCount} tasks</p>
                 </div>
                 <div>
                     <button
@@ -24,7 +43,7 @@ export function Tasks() {
                     </button>
                 </div>
             </div>
-            <TaskLists />
+            <TaskLists currentUser={currentUser} />
         </div>
     )
 }
