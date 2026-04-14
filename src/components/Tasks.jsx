@@ -11,7 +11,6 @@ export function Tasks({ currentUser, isLoggedIn }) {
     const [editTask, setEditTask] = useState(false)
     const [taskToEdit, setTaskToEdit] = useState(null)
     const [taskCount, setTaskCount] = useState(0)
-    // Get the count of tasks for the current user
 
     useEffect(() => {
         const fetchTaskCount = async () => {
@@ -36,7 +35,6 @@ export function Tasks({ currentUser, isLoggedIn }) {
             <div className="flex justify-between items-start">
                 <div>
                     <p className='text-2xl lg:text-2xl font-bold'>My Tasks</p>
-                    {/* count number of tasks in currentUser check very well to be sure it's correct */}
                     <p className='lg:text-md'>You have {taskCount} tasks</p>
                 </div>
                 <div>

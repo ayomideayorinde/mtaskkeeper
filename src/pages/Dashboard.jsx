@@ -12,10 +12,6 @@ export function Dashboard({ setIsLoggedIn, isLoggedIn, currentUser }) {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       const userinfo = async () => {
         if (!currentUser?.uid) return;
-        // if (user) {
-        //   setUserName(user.displayName? user.displayName : 'User');
-        // }
-        // else {
           try {
               const userDocRef = doc(db, "users", currentUser.uid);
 
@@ -31,7 +27,6 @@ export function Dashboard({ setIsLoggedIn, isLoggedIn, currentUser }) {
               setUserName('Guest');
             }
           };
-        // }
       userinfo();
     });
     return unsubscribe;

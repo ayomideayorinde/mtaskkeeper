@@ -37,7 +37,6 @@ export function LoginForm({errr, setErrr, setIsLoggedIn, isLoggedIn, setIsLoadin
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     
-    // Handle Google Login
     const handleGoogleLogin = async () => {
         const provider = new GoogleAuthProvider();
 
