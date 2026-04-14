@@ -10,11 +10,11 @@ export function Tasks({ currentUser }) {
     const [taskCount, setTaskCount] = useState(0)
     // Get the count of tasks for the current user
     const fetchTaskCount = async () => {
-        if (!currentUser) return;
+        if (!currentUser?.uid) return;
 
         const q = query(
             collection(db, "todos"),
-            where("userId", "==", currentUser.uid)
+            where("uId", "==", currentUser.uid)
         );
         const snapshot = await getCountFromServer(q);
         setTaskCount(snapshot.data().count);

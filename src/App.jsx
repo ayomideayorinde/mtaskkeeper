@@ -9,20 +9,20 @@ import { auth } from './config/firebase'
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [currentUser, setCurrentUser] = useState()
+  const [currentUser, setCurrentUser] = useState(null)
 
-  useEffect(()=>{
-    const unsubscribe = onAuthStateChanged(auth, (user)=>{
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsLoggedIn(true)
-        setCurrentUser(user.email)
-      }
-      else {
+        setCurrentUser(user)
+      } else {
         setIsLoggedIn(false)
+        setCurrentUser(null)
       }
     })
-    return ()=> unsubscribe()
-  },[])
+    return unsubscribe
+  }, [])
 
   return (
     <div>

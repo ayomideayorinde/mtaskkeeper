@@ -8,12 +8,11 @@ export function TaskLists({ currentUser }) {
     const [tasks, setTasks] = useState([]);
 
     useEffect(() => {
-        const user = auth.currentUser;
-        if (!user) return;
+        if (!currentUser?.uid) return;
         const unsubscribe = onSnapshot(
             query(
                 collection(db, 'todos'),
-                where('uId','==',user.uid)
+                where('uId','==',currentUser.uid)
             ),
             (snapshot)=>{
                 const data = snapshot.docs.map((doc)=>({
@@ -23,7 +22,7 @@ export function TaskLists({ currentUser }) {
             setTasks(data)
         })
         return ()=>unsubscribe()
-    }, []);
+    }, [currentUser]);
 
 
     return (
@@ -61,7 +60,7 @@ export function TaskLists({ currentUser }) {
                                     <LuTrash2 className="text-red-500 cursor-pointer hover:scale-110 transition" 
                                     onClick={() => {
                                         // Handle delete task logic
-                                        deleteDoc(doc(db, "todos", task.id));
+                                        deleteDoc(doc(db, "todos", task.docId));
                                     }}
                                     />
                                 </div>
