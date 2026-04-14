@@ -1,5 +1,5 @@
 import { LuSquareCheck, LuLogOut } from "react-icons/lu"
-import { useNavigate } from "react-router"
+import { useNavigate } from "react-router-dom"
 import { signOut } from 'firebase/auth'
 import { auth } from '../config/firebase'
 

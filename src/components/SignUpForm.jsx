@@ -1,6 +1,6 @@
 import { FaGoogle } from "react-icons/fa";
 //import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { SignUpConfig } from "../config/signUp";
 
 export function SignUpForm({errr, setErrr, successDisplay, setSuccessDisplay, setIsLoggedIn, isLoggedIn, setIsLoading}) {
