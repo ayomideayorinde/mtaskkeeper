@@ -1,5 +1,5 @@
 import { FaGoogle } from "react-icons/fa";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
 import { auth } from '../config/firebase'
 import { useState } from "react"
