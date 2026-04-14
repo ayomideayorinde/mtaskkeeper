@@ -1,12 +1,12 @@
-import { addDoc, collection, serverTimestamp } from "firebase/firestore"
-import { db } from "../config/firebase"
 import { useState } from "react"
+import { updateDoc, doc } from "firebase/firestore"
+import { db } from "../config/firebase"
 
-export function AddTasks({setAddTask, isLoggedIn, currentUser}) {
-    const [title, setTitle] = useState("")
-    const [description, setDescription] = useState("")
+export function EditTask({setEditTask, taskToEdit, setTaskToEdit, isLoggedIn, currentUser}) {
+    const [title, setTitle] = useState(taskToEdit?.title || "")
+    const [description, setDescription] = useState(taskToEdit?.description || "")
     const [titleerror, setTitleError] = useState("")
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         setTitleError("")
@@ -19,22 +19,21 @@ export function AddTasks({setAddTask, isLoggedIn, currentUser}) {
             return
         }
 
-        const newTask = {
+        const updatedTask = {
             title: title,
             description: description,
-            status: false,
-            uId: currentUser.uid,
-            createdAt: serverTimestamp()
+            uId: currentUser.uid
         }
 
         if (isLoggedIn) {
             try {
-                await addDoc(collection(db, "todos"), newTask)
+                await updateDoc(doc(db, "todos", taskToEdit.docId), updatedTask)
                 setTitle("");
                 setDescription("");
-                setAddTask(false);
+                setEditTask(false);
+                setTaskToEdit(null);
             } catch (error) {
-                setTitleError(`Failed to add task: ${error.message}`)
+                setTitleError(`Failed to update task: ${error.message}`)
                 setTimeout(() => {
                     setTitleError("")
                 }, 3000)
@@ -47,12 +46,12 @@ export function AddTasks({setAddTask, isLoggedIn, currentUser}) {
             <div className=" bg-white rounded space-y-4 w-full lg:w-1/2 py-2 px-6 text-black shadow border shadow-black/50 relative">
                 <button 
                     className="absolute right-4 top-2 hover:text-red-600"
-                    onClick={()=>setAddTask(false)}
+                    onClick={()=>setEditTask(false)}
                 >
                     X
                 </button>
                 <h1 className="text-lg mb-4">
-                    Add New Task
+                    Edit Task
                 </h1>
                 <form action="" onSubmit={handleSubmit} className="flex flex-col gap-5">
                     <div className="flex flex-col">
@@ -83,9 +82,9 @@ export function AddTasks({setAddTask, isLoggedIn, currentUser}) {
                     <div className="flex justify-end gap-3 mb-4">
                         <button 
                             className="border border-gray-300 py-1 px-4 rounded"
-                            onClick={()=>setAddTask(false)}
+                            onClick={()=>setEditTask(false)}
                         >Cancel</button>
-                        <button className="bg-gradient-to-br from-blue-700 via-blue-500 to-blue-700 text-white py-1 px-4 rounded">Save Task</button>
+                        <button className="bg-gradient-to-br from-blue-700 via-blue-500 to-blue-700 text-white py-1 px-4 rounded">Update Task</button>
                     </div>
                 </form>
             </div>

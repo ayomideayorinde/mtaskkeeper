@@ -1,14 +1,35 @@
 import { FaGoogle } from "react-icons/fa";
-//import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { SignUpConfig } from "../config/signUp";
+import { GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "../config/firebase";
+import { doc, setDoc } from "firebase/firestore";
+import { useState } from "react";
 
-export function SignUpForm({errr, setErrr, successDisplay, setSuccessDisplay, setIsLoggedIn, isLoggedIn, setIsLoading}) {
+export function SignUpForm({errr, setErrr, successDisplay, setSuccessDisplay, setIsLoggedIn, setIsLoading}) {
+
+    const [fName, setFName] = useState('');
+    const [lName, setLName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
+    const handleGoogleLogin = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            setIsLoading(true);
+            await signInWithPopup(auth, provider);
+            setIsLoggedIn(true);
+            navigate('/dashboard');
+        } catch (error) {
+            setErrr(`Google Login failed. ${error.code}`);
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
     const navigate = useNavigate(); 
-    const { fName, setFName, lName, setLName, email, setEmail, password, setPassword, confirmPassword, setConfirmPassword } = SignUpConfig();
 
-    const handleSignUp = (e) => {
+    const handleSignUp = async (e) => {
         e.preventDefault();
         setErrr('');
         if(!fName.trim()) {
@@ -41,22 +62,32 @@ export function SignUpForm({errr, setErrr, successDisplay, setSuccessDisplay, se
             errdisplay
             return;
         }
-        setFName('')
-        setLName('')
-        setEmail('')
-        setPassword('')
-        setConfirmPassword('')
-        setSuccessDisplay('Login Successfully!')
-        setTimeout(()=>{
-            setSuccessDisplay('')
-            setIsLoggedIn(!isLoggedIn)
-            navigate('/dashboard')
-        },2000)
-        setIsLoading(true);
-        setTimeout(()=>{
-            setIsLoading(false);
-            navigate('/dashboard')
-        },3000)
+
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            setDoc(doc(db, "users", userCredential.user.uid), {
+                fName: fName,
+                lName: lName,
+                email: email,
+            })
+            setSuccessDisplay('Account created successfully! Redirecting to login...')
+            setFName('')
+            setLName('')
+            setEmail('')
+            setPassword('')
+            setConfirmPassword('')
+            setTimeout(() => {
+                setSuccessDisplay('')
+            }, 3000)
+            setIsLoading(true);
+            setTimeout(()=>{
+                setIsLoading(false);
+                navigate('/dashboard')
+            },3000)
+        } catch (error) {
+            setErrr(`${error.code === 'auth/email-already-in-use' ? 'Email is already in use. Please use a different email.' : `Sign Up failed. ${error.code}`}`);
+            errdisplay
+        }
     }
 
     const errdisplay = 
@@ -113,7 +144,7 @@ export function SignUpForm({errr, setErrr, successDisplay, setSuccessDisplay, se
             <button type="submit" className="bg-blue-700 text-white py-2 rounded mt-4 w-full">Create Account</button>
             <button 
                 className="bg-white text-black py-2 rounded mt-2 w-full border border-blue-700 flex items-center justify-center"
-                
+                onClick={handleGoogleLogin}
             >
                 <FaGoogle className="mr-2 text-blue-700" />
                 Login with Google

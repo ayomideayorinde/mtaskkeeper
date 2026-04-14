@@ -1,32 +1,38 @@
 import { LuPlus } from "react-icons/lu"
 import { TaskLists } from "./TaskLists"
 import { AddTasks } from "./AddTasks"
+import { EditTask } from "./EditTask"
 import { useEffect, useState } from "react"
-import { collection, query, where, getCountFromServer } from "firebase/firestore";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from "../config/firebase";
 
-export function Tasks({ currentUser }) {
+export function Tasks({ currentUser, isLoggedIn }) {
     const [addTask, setAddTask] = useState(false)
+    const [editTask, setEditTask] = useState(false)
+    const [taskToEdit, setTaskToEdit] = useState(null)
     const [taskCount, setTaskCount] = useState(0)
     // Get the count of tasks for the current user
-    const fetchTaskCount = async () => {
-        if (!currentUser?.uid) return;
-
-        const q = query(
-            collection(db, "todos"),
-            where("uId", "==", currentUser.uid)
-        );
-        const snapshot = await getCountFromServer(q);
-        setTaskCount(snapshot.data().count);
-    };
 
     useEffect(() => {
+        const fetchTaskCount = async () => {
+            if (!currentUser?.uid) return;
+
+            const q = query(
+                collection(db, "todos"),
+                where("uId", "==", currentUser.uid)
+            );
+            const unsubscribe = onSnapshot(q, (snapshot) => {
+                setTaskCount(snapshot.size);
+            });
+            return unsubscribe;
+        };
         fetchTaskCount();
     }, [currentUser]);
 
     return (
         <div className="Tasks w-full flex flex-col p-4 lg:px-36 gap-2 mt-3">
-            {addTask && <AddTasks setAddTask={setAddTask} />}
+            {addTask && <AddTasks setAddTask={setAddTask} isLoggedIn={isLoggedIn} currentUser={currentUser} />}
+            {editTask && <EditTask setEditTask={setEditTask} taskToEdit={taskToEdit} setTaskToEdit={setTaskToEdit} isLoggedIn={isLoggedIn} currentUser={currentUser} />}
             <div className="flex justify-between items-start">
                 <div>
                     <p className='text-2xl lg:text-2xl font-bold'>My Tasks</p>
@@ -43,7 +49,7 @@ export function Tasks({ currentUser }) {
                     </button>
                 </div>
             </div>
-            <TaskLists currentUser={currentUser} />
+            <TaskLists currentUser={currentUser} editTask={editTask} setEditTask={setEditTask} taskToEdit={taskToEdit} setTaskToEdit={setTaskToEdit} />
         </div>
     )
 }
