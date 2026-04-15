@@ -125,7 +125,7 @@ export function LoginForm({errr, setErrr, setIsLoggedIn, isLoggedIn, setIsLoadin
             <button 
                 className="bg-white text-black py-2 rounded mt-2 w-full border border-blue-700 flex items-center justify-center"
                 onClick={handleGoogleLogin}
-                
+                type="button"
             >
                 <FaGoogle className="mr-2 text-blue-700" />
                 Login with Google
