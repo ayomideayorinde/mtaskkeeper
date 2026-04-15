@@ -5,7 +5,7 @@ import { auth, db } from '../config/firebase';
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 
-export function Dashboard({ setIsLoggedIn, isLoggedIn, currentUser }) {
+export function Dashboard({ setIsLoggedIn, isLoggedIn, currentUser, darkMode, setDarkMode }) {
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
@@ -35,13 +35,13 @@ export function Dashboard({ setIsLoggedIn, isLoggedIn, currentUser }) {
   
 
   return (
-    <section className='Dashboard w-full'>
-      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} currentUser={currentUser} />
+    <section className='Dashboard min-h-screen w-full bg-white dark:bg-black'>
+      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} currentUser={currentUser} darkMode={darkMode} setDarkMode={setDarkMode} />
       <div className='w-full flex flex-col p-4 lg:px-36 lg:gap-2 mt-3'>
-        <p className='lg:text-xl text-md'>Hi <span className='font-bold'>{userName}</span>, Welcome to your dashboard!</p>
+        <p className='lg:text-xl text-md text-black dark:text-white'>Hi <span className='font-bold dark:text-blue-300 text-blue-700'>{userName}</span>, Welcome to your dashboard!</p>
         <hr className='border-b-2' />
       </div>
-      <Tasks currentUser={currentUser} isLoggedIn={isLoggedIn} />
+      <Tasks currentUser={currentUser} isLoggedIn={isLoggedIn} darkMode={darkMode} setDarkMode={setDarkMode} />
     </section>
   );
 }

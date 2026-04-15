@@ -30,7 +30,7 @@ export function TaskLists({ currentUser, editTask, setEditTask, setTaskToEdit })
         <div className="TaskLists mt-5 bg-white rounded-lg p-4 shadow-md border border-blue-200 w-full overflow-x-auto">
             <h1 className="text-2xl font-medium mb-4">All Tasks</h1>
             <table className="w-full border border-gray-200 rounded-lg overflow-hidden">
-                <thead className="bg-gradient-to-r from-blue-700 via-blue-500 to-blue-700 text-white">
+                <thead className="dark:bg-gradient-to-r dark:from-gray-900 dark:via-gray-500 dark:to-gray-900 bg-gradient-to-r from-blue-700 via-blue-500 to-blue-700 text-white">
                     <tr className="text-left text-sm text-white">
                     <th className="px-4 py-3 w-1/4">Task Title</th>
                     <th className="px-4 py-3 w-1/2">Task Description</th>

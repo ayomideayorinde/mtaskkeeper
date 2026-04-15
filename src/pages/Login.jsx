@@ -2,8 +2,9 @@ import { LuSquareCheck } from "react-icons/lu";
 import { LoginForm } from "../components/LoginForm";
 import { SignUpForm } from "../components/SignUpForm";
 import { useState, useEffect } from "react";
+import { LuSun, LuMoon } from "react-icons/lu";
 
-export function Login({isLoggedIn, setIsLoggedIn, currentUser}) {
+export function Login({isLoggedIn, setIsLoggedIn, currentUser, darkMode, setDarkMode}) {
     const [isLogin, setIsLogin] = useState(true);
     const [errr, setErrr] = useState('');
     const [successDisplay, setSuccessDisplay] = useState('')
@@ -19,7 +20,15 @@ export function Login({isLoggedIn, setIsLoggedIn, currentUser}) {
     }, [isLoading]);
 
   return (
-    <section className="min-h-[100vh] bg-gradient-to-br from-blue-700 via-blue-500 to-blue-700 p-4 flex items-center justify-center w-full">
+    <section className="min-h-[100vh] dark:bg-gradient-to-br dark:from-gray-900 dark:via-gray-500 dark:to-gray-900 bg-gradient-to-br from-blue-700 via-blue-500 to-blue-700 p-4 flex items-center justify-center w-full">
+        <button 
+            onClick={() => setDarkMode(!darkMode)}
+            className="absolute top-4 right-4 bg-black dark:bg-white text-white dark:text-black py-2 px-2 rounded-full transition">
+            {darkMode ? 
+                <LuSun size={20} /> : 
+                <LuMoon size={20} />
+            }
+        </button>
         <div className="w-full max-w-md mx-auto bg-white rounded-lg shadow-lg p-4">
             <div className="flex flex-col items-center justify-center gap-4 w-full">
                 <div className="space-y-1 flex flex-col items-center">

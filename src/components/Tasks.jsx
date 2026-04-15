@@ -33,7 +33,7 @@ export function Tasks({ currentUser, isLoggedIn }) {
             {addTask && <AddTasks setAddTask={setAddTask} isLoggedIn={isLoggedIn} currentUser={currentUser} />}
             {editTask && <EditTask setEditTask={setEditTask} taskToEdit={taskToEdit} setTaskToEdit={setTaskToEdit} isLoggedIn={isLoggedIn} currentUser={currentUser} />}
             <div className="flex justify-between items-start">
-                <div>
+                <div className="dark:text-white">
                     <p className='text-2xl lg:text-2xl font-bold'>My Tasks</p>
                     <p className='lg:text-md'>You have {taskCount} tasks</p>
                 </div>
