@@ -11,9 +11,9 @@ export function Dashboard({ setIsLoggedIn, isLoggedIn, currentUser, darkMode, se
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       const userinfo = async () => {
-        if (!currentUser?.uid) return;
+        if (!user) return;
           try {
-              const userDocRef = doc(db, "users", currentUser.uid);
+              const userDocRef = doc(db, "users", user.uid);
 
               const userDoc = await getDoc(userDocRef);
               if (userDoc.exists()) {
@@ -30,7 +30,7 @@ export function Dashboard({ setIsLoggedIn, isLoggedIn, currentUser, darkMode, se
       userinfo();
     });
     return unsubscribe;
-  }, [setIsLoggedIn, currentUser.uid]);
+  }, [setIsLoggedIn, currentUser?.uid]);
 
   
 
