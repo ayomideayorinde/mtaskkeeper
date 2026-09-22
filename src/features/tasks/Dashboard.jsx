@@ -43,7 +43,7 @@ export default function Dashboard({ user }) {
           <div className="list-footer"><span>{visible.length} {visible.length === 1 ? 'task' : 'tasks'} in this view</span><span><LuCheck /> Small steps count.</span></div>
         </section>
         <section className="progress-card"><span className="progress-spark"><LuSparkles /></span><div><h3>{stats.total && stats.progress === 100 ? 'Look at you. All done!' : 'Progress, one task at a time.'}</h3><p>{stats.completed} of {stats.total} tasks complete. Keep going at your own pace.</p></div><div className="progress-meter"><span>{stats.progress}% complete</span><progress aria-label="Tasks completed" value={stats.progress} max="100" /></div></section>
-        <footer className="dashboard-footer">A little more organized, every day.<span>TaskKeeper</span></footer>
+        <footer className="dashboard-footer">A little more organized, every day.<span>TaskKeeper <span>created by <a className="font-semibold" href="https://amayorinde.vercel.app" aria-label="Michael Ayorinde" target='_blank'>Michael Ayorinde</a></span></span></footer>
       </main>
     </div>
     {editing !== undefined && <TaskForm task={editing} onClose={() => setEditing(undefined)} onSave={save} />}
