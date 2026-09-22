@@ -34,7 +34,7 @@ export default function AuthPage() {
       <Brand />
       <div className="story-content">
         <span className="eyebrow"><span className="tiny-line" /> A little structure. A lot more clarity.</span>
-        <h1>Make room for<br />what <span>matters.</span></h1>
+        <h1>Make room for <br />what <span>matters.</span></h1>
         <p>Your ideas, plans, and everyday to-dos.<br className="desktop-break" /> All together in one calm place.</p>
         <div className="preview-card" aria-label="Example task list">
           <div className="preview-heading"><span><LuSparkles /> A fresh start</span><span className="mini-tag">TODAY</span></div>
