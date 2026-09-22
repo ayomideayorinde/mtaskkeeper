@@ -1,4 +1,4 @@
-# MTaskKeeper
+# TaskKeeper
 
 A responsive personal task manager built with React, Vite, and Firebase.
 
