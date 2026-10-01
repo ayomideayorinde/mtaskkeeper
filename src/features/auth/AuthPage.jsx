@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, updateProfile, sendPasswordResetEmail } from 'firebase/auth';
-import { LuArrowRight, LuCheck, LuEye, LuEyeOff, LuShieldCheck, LuSparkles } from 'react-icons/lu';
+import { LuArrowRight, LuCheck, LuEye, LuEyeOff, LuShieldCheck, LuRocket } from 'react-icons/lu';
 import { FcGoogle } from 'react-icons/fc';
 import { auth } from '../../lib/firebase';
 import { Brand } from '../../components/ui/Brand';
@@ -37,7 +37,7 @@ export default function AuthPage() {
         <h1>Make room for <br />what <span>matters.</span></h1>
         <p>Your ideas, plans, and everyday to-dos.<br className="desktop-break" /> All together in one calm place.</p>
         <div className="preview-card" aria-label="Example task list">
-          <div className="preview-heading"><span><LuSparkles /> A fresh start</span><span className="mini-tag">TODAY</span></div>
+          <div className="preview-heading"><span><LuRocket /> A fresh start</span><span className="mini-tag">TODAY</span></div>
           <div className="preview-task checked"><span className="fake-check"><LuCheck /></span><span>Make a little space to focus</span></div>
           <div className="preview-task"><span className="fake-check" /><span>Bring your next idea to life</span><span className="task-dot" /></div>
           <div className="preview-task"><span className="fake-check" /><span>Take it one step at a time</span></div>

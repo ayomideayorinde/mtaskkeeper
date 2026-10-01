@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
-import { LuArrowUpRight, LuCheck, LuCircleCheck, LuLayoutDashboard, LuListTodo, LuLogOut, LuPencil, LuPlus, LuSearch, LuSparkles, LuTrash2 } from 'react-icons/lu';
+import { LuArrowUpRight, LuCheck, LuCircleCheck, LuLayoutDashboard, LuListTodo, LuLogOut, LuPencil, LuPlus, LuSearch, LuRocket, LuTrash2, LuLoaderCircle } from 'react-icons/lu';
 import { auth, db } from '../../lib/firebase';
 import { Brand } from '../../components/ui/Brand';
 import { Modal } from '../../components/ui/Modal';
@@ -24,7 +24,7 @@ export default function Dashboard({ user }) {
     let active = true;
     getDoc(doc(db, 'users', user.uid)).then(profile => {
       if (active) setName(profile.data()?.fName || user.displayName || user.email?.split('@')[0] || 'there');
-    }).catch(() => {});
+    }).catch(() => { });
     return () => { active = false; };
   }, [user]);
   async function act(id, action) {
@@ -32,10 +32,10 @@ export default function Dashboard({ user }) {
     try { await action(); } catch { setActionError('That change couldn’t be saved. Please try again.'); } finally { setPending(null); }
   }
   return <div className="workspace">
-    <aside className="sidebar"><Brand /><span className="eyebrow sidebar-label">WORKSPACE</span><button className="nav-item active" onClick={() => { setFilter('all'); setSearch(''); }}><LuLayoutDashboard />My tasks<span>{tasks.length}</span></button><div className="sidebar-tip"><LuSparkles /><h3>A little every day.</h3><p>Big things happen one small task at a time. You’ve got this.</p></div><div className="account"><span className="avatar">{name.charAt(0).toUpperCase()}</span><div><strong>{name}</strong><small>Personal workspace</small></div><button className="icon-button" aria-label="Sign out" disabled={pending !== null} onClick={() => act('signout', () => signOut(auth))}><LuLogOut /></button></div></aside>
+    <aside className="sidebar"><Brand /><span className="eyebrow sidebar-label">WORKSPACE</span><button className="nav-item active" onClick={() => { setFilter('all'); setSearch(''); }}><LuLayoutDashboard />My tasks<span>{tasks.length}</span></button><div className="sidebar-tip"><LuRocket /><h3>A little every day.</h3><p>Big things happen one small task at a time. You’ve got this.</p></div><div className="account"><span className="avatar">{name.charAt(0).toUpperCase()}</span><div><strong>{name}</strong><small>Personal workspace</small></div><button className="icon-button" aria-label="Sign out" disabled={pending !== null} onClick={() => act('signout', () => signOut(auth))}><LuLogOut /></button></div></aside>
     <div className="workspace-body"><header className="workspace-header"><span>Workspace <span className="muted">/</span> <strong>My tasks</strong></span><span className="header-date">{new Intl.DateTimeFormat('en', { weekday: 'short', month: 'short', day: 'numeric' }).format(new Date())}</span></header>
       <main className="dashboard-main"><div className="dashboard-intro"><div><span className="eyebrow">LET’S MAKE TODAY COUNT</span><h1>A little focus, {name.split(' ')[0]}<span className="brand-dot">.</span></h1><p className="muted">Your day, your pace. Make space for what matters.</p></div><button className="button primary" onClick={() => setEditing(null)}><LuPlus />New task</button></div>
-        <div className="stats-grid"><div className="stat-card"><span className="stat-icon"><LuListTodo /></span><span>Total tasks<strong>{loading ? '—' : stats.total}</strong></span><LuArrowUpRight className="stat-arrow" /></div><div className="stat-card"><span className="stat-icon peach"><LuSparkles /></span><span>In progress<strong>{loading ? '—' : stats.pending}</strong></span></div><div className="stat-card"><span className="stat-icon green"><LuCircleCheck /></span><span>Completed<strong>{loading ? '—' : stats.completed}</strong></span></div></div>
+        <div className="stats-grid"><div className="stat-card"><span className="stat-icon"><LuListTodo /></span><span>Total tasks<strong>{loading ? '—' : stats.total}</strong></span><LuArrowUpRight className="stat-arrow" /></div><div className="stat-card"><span className="stat-icon peach"><LuLoaderCircle /></span><span>In progress<strong>{loading ? '—' : stats.pending}</strong></span></div><div className="stat-card"><span className="stat-icon green"><LuCircleCheck /></span><span>Completed<strong>{loading ? '—' : stats.completed}</strong></span></div></div>
         <section className="task-panel" aria-label="Your tasks"><div className="task-panel-heading"><div><h2>My tasks <span className="count-pill">{tasks.length}</span></h2><p className="muted">A home for everything on your list.</p></div><label className="search-field"><LuSearch /><input type="search" aria-label="Search tasks" placeholder="Search tasks…" value={search} onChange={event => setSearch(event.target.value)} /></label></div>
           <div className="task-tabs">{[['all', 'All tasks', stats.total], ['pending', 'In progress', stats.pending], ['completed', 'Completed', stats.completed]].map(([value, label, count]) => <button key={value} aria-pressed={filter === value} className={filter === value ? 'active' : ''} onClick={() => setFilter(value)}>{label}<span>{count}</span></button>)}</div>
           {(error || actionError) && <p className="message error panel-message" role="alert">{error || actionError}</p>}
